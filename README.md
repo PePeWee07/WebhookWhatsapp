@@ -1,3 +1,8 @@
+# Iniciar Proyecto
+```cmd
+mvn tomcat7:run
+```
+
 # Configuración del Proyecto
 
 Este proyecto utiliza variables de entorno para gestionar configuraciones sensibles como los tokens de autenticación.
