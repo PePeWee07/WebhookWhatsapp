@@ -1,6 +1,48 @@
-# Glosario de JSON recividos
+# Configuración del Proyecto
 
-## Ejemplo de Mensaje Saliente JSON
+Este proyecto utiliza variables de entorno para gestionar configuraciones sensibles como los tokens de autenticación.
+
+## Configuración de Variables de Entorno
+
+Para que el proyecto funcione correctamente, es necesario configurar una variable de entorno que almacene el token utilizado para la autenticación de los webhooks.
+
+## Cómo Configurar
+
+### Windows
+
+1. Abre el Panel de Control.
+2. Navega a Sistema y seguridad > Sistema > Configuración avanzada del sistema.
+3. Haz clic en Variables de entorno.
+4. En Variables del sistema, haz clic en Nueva.
+5. Introduce el nombre de la variable, por ejemplo, `TOKEN_API`.
+6. Introduce el valor del token.
+7. Haz clic en OK para guardar los cambios.
+
+#### Alternativa Powershell
+
+```powershell
+$env:TOKEN_API = "TU_TOKEN"
+echo $env:TOKEN_API
+```
+
+#### Alternativa CMD
+
+```cmd
+set TOKEN_API=TU_TOKEN
+echo %TOKEN_API%
+```
+
+### Linux/Mac
+
+Para configurar la variable de entorno en sistemas basados en Linux, puedes agregarla a tu archivo `.bashrc` o `.profile`, dependiendo de tu shell.
+
+```bash
+export TOKEN_API="tu_token_aquí"
+```
+
+## Glosario de JSON recividos
+
+### Ejemplo de Mensaje Saliente JSON
 
 ```json
 {
@@ -68,7 +110,7 @@
 | `category`                | Categoría del servicio bajo el modelo de precios, como `service`.       |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
-## Ejemplo de Mensaje Entrante JSON
+### Ejemplo de Mensaje Entrante JSON
 
 ```json
 {
