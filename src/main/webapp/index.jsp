@@ -45,7 +45,11 @@
             // Convertimos el texto recibido
             String textoRecibidoWA = stringBuilder.toString();
             // Envio de mensaje a la API
-            WebhookClient.sendToApi(textoRecibidoWA);
+            // WebhookClient.sendToApi(textoRecibidoWA);}
+
+            if (textoRecibidoWA.contains("contacts")) {
+                WebhookClient.sendToApi(textoRecibidoWA);
+            } 
 
             // Guardamos el texto en un archivo
             try {
