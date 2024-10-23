@@ -176,3 +176,129 @@ export TOKEN_API="tu_token_aquí"
 | `type`                    | Tipo de mensaje, como `text`.                                           |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
+### Ejemplo de racion a un mensaje
+- El siguiente es un ejemplo de un mensaje de reacción recibido de parte de un cliente. No recibirás este webhook si el mensaje al que reaccionó el cliente tiene más de 30 días.
+
+```json
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "382874548252970",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551765358",
+              "phone_number_id": "435688539630512"
+            },
+            "contacts": [
+              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
+            ],
+            "messages": [
+              {
+                "from": "593983439289",
+                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMDdBMEQ2QUVFNTBDNDA5NjFBQQA=",
+                "timestamp": "1729708958",
+                "type": "reaction",
+                "reaction": {
+                  "message_id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMEUzMUM3RUEwRjI4RTdGMUY4RgA=",
+                  "emoji": "\ud83d\ude22"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Ejemplo de mensaje multimedia
+```json
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "382874548252970",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551765358",
+              "phone_number_id": "435688539630512"
+            },
+            "contacts": [
+              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
+            ],
+            "messages": [
+              {
+                "from": "593983439289",
+                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMDczRDhGRjQzMEE3QjIwQTNFNgA=",
+                "timestamp": "1729709150",
+                "type": "image",
+                "image": {
+                  "mime_type": "image/jpeg",
+                  "sha256": "76BcgW2dCgcN34E8bqTaM0DRLvpsuyrUbt0SR4pz9iU=",
+                  "id": "1076724067255163"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Ejemplo de mensaje Sticker
+```json
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "382874548252970",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551765358",
+              "phone_number_id": "435688539630512"
+            },
+            "contacts": [
+              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
+            ],
+            "messages": [
+              {
+                "from": "593983439289",
+                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMENDNUNCMzFERTFFQzlERjAxMgA=",
+                "timestamp": "1729709268",
+                "type": "sticker",
+                "sticker": {
+                  "mime_type": "image/webp",
+                  "sha256": "FxEleR33uQpynY3h/zHzZedjMEmVK/UEdfKGFWaUZnk=",
+                  "id": "1606242173110184",
+                  "animated": false
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Mesnsaje desconocido
+- Es posible recibir una notificación de devolución de llamada en respuesta a un mensaje desconocido. Por ejemplo, un cliente podría enviarte un mensaje no compatible, como un mensaje que desaparece (en cuyo caso, le notificaremos al cliente que no se admite el tipo de mensaje).
+```json
+```
