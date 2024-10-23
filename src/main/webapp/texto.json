@@ -11,20 +11,20 @@
               "display_phone_number": "15551765358",
               "phone_number_id": "435688539630512"
             },
-            "contacts": [
-              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
-            ],
-            "messages": [
+            "statuses": [
               {
-                "from": "593983439289",
-                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMENDNUNCMzFERTFFQzlERjAxMgA=",
-                "timestamp": "1729709268",
-                "type": "sticker",
-                "sticker": {
-                  "mime_type": "image/webp",
-                  "sha256": "FxEleR33uQpynY3h/zHzZedjMEmVK/UEdfKGFWaUZnk=",
-                  "id": "1606242173110184",
-                  "animated": false
+                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAERgSMkJFRUEzRjNBRDExQTlBMjEzAA==",
+                "status": "delivered",
+                "timestamp": "1729712314",
+                "recipient_id": "593983439289",
+                "conversation": {
+                  "id": "a33589375eee08e408ff88d474f94a57",
+                  "origin": { "type": "service" }
+                },
+                "pricing": {
+                  "billable": true,
+                  "pricing_model": "CBP",
+                  "category": "service"
                 }
               }
             ]

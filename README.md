@@ -176,7 +176,7 @@ export TOKEN_API="tu_token_aquí"
 | `type`                    | Tipo de mensaje, como `text`.                                           |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
-### Ejemplo de racion a un mensaje
+### Ejemplo de reaccion a un mensaje
 - El siguiente es un ejemplo de un mensaje de reacción recibido de parte de un cliente. No recibirás este webhook si el mensaje al que reaccionó el cliente tiene más de 30 días.
 
 ```json
@@ -297,8 +297,4 @@ export TOKEN_API="tu_token_aquí"
   ]
 }
 ```
-
-### Mesnsaje desconocido
-- Es posible recibir una notificación de devolución de llamada en respuesta a un mensaje desconocido. Por ejemplo, un cliente podría enviarte un mensaje no compatible, como un mensaje que desaparece (en cuyo caso, le notificaremos al cliente que no se admite el tipo de mensaje).
-```json
-```
+### Mas ejemplos: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#mensajes-recibidos
