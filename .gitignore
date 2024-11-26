@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 logs/
+src/main/webapp/WEB-INF/messages/
 
 ### STS ###
 .apt_generated
