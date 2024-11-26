@@ -32,7 +32,7 @@ public class WebhookClient {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/v1/whatsapp/receive"))
+                    .uri(URI.create("http://localhost:8082/api/v1/whatsapp/receive"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(jsonData))
                     .build();
