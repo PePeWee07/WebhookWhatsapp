@@ -58,19 +58,35 @@
 
                     // Guardamos el texto en un archivo
                     try {
+                        // Generar nombre de archivo único
                         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                         StringBuilder nombreArchivo = new StringBuilder("msg-");
                         Random rnd = new Random();
-                        for (int i = 0; i < 10; i++) {
+                        for (int i = 0; i < 16; i++) {
                             nombreArchivo.append(caracteres.charAt(rnd.nextInt(caracteres.length())));
                         }
-                        String archivo = application.getRealPath("/messages") + "\\" + nombreArchivo.toString() + ".json";
+                        String archivoNombre = nombreArchivo.toString() + ".json";
+                        
+                        // Ruta relativa a la carpeta "messages"
+                        String carpeta = application.getRealPath("/messages");
+                        
+                        // Crear la carpeta si no existe
+                        File carpetaDirectorio = new File(carpeta);
+                        if (!carpetaDirectorio.exists()) {
+                            carpetaDirectorio.mkdirs();
+                        }
+                        
+                        // Ruta completa del archivo
+                        String archivo = carpeta + File.separator + archivoNombre;
+                        
+                        // Escribir el archivo
                         FileWriter fWriter = new FileWriter(archivo);
                         fWriter.write(textoRecibidoWA);
                         fWriter.close();
                     } catch (IOException e) {
                         out.print("Error: " + e.getMessage());
                     }
+
                 } else {
                     out.print("No se envió el mensaje a la API-Springboot.");
                 }
