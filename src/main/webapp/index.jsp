@@ -84,7 +84,6 @@
                         }
                     }
                 } catch (IOException e) {
-                    // Log del error
                     out.print("Error al guardar el mensaje: " + e.getMessage());
                 }
             } else {
