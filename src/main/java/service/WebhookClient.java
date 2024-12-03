@@ -18,7 +18,7 @@ public class WebhookClient {
 
     private static void setupLogger() {
         try {
-            FileHandler fileHandler = new FileHandler("logs/webhook.log", true);
+            FileHandler fileHandler = new FileHandler("logs/webhookController.log", true);
             fileHandler.setEncoding("UTF-8");
             fileHandler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(fileHandler);

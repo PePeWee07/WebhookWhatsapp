@@ -2,7 +2,13 @@
 <%@page import="service.WebhookClient"%>
 <%@page import="service.TokenUtil"%>
 <%@page import="java.util.Random"%>
+<%@ page import="org.apache.log4j.Logger" %>
+<%@ page import="org.json.JSONObject" %>
+<%@ page import="org.json.JSONArray" %>
 <%
+
+    Logger logger = Logger.getLogger(getClass());
+
     /*
      * VERIFICACION DEL WEBHOOK
      */
@@ -13,12 +19,12 @@
 
         if (token.equals(tokenVerificacion)) {
             response.setStatus(HttpServletResponse.SC_OK);
-            out.print(palabraReto);
+            logger.info("Webhook verificado correctamente.");
             return;
         }
     } catch (Exception e) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        out.print("Error: " + e.getMessage());
+        logger.error("Error: " + e.getMessage());
         return;
     }
 
@@ -28,7 +34,6 @@
     try {
         // Confirmar recepción con HTTP 200 OK inmediatamente
         response.setStatus(HttpServletResponse.SC_OK);
-        out.flush();
 
         // Leer los datos del cuerpo de la solicitud
         ServletInputStream mServletInputStream = request.getInputStream();
@@ -46,53 +51,58 @@
             }
 
             String textoRecibidoWA = stringBuilder.toString();
+            //logger.info("CONTROL-MESSAGE: " + textoRecibidoWA);
+
 
             // Procesar el mensaje recibido
             if (textoRecibidoWA.contains("contacts")) {
                 WebhookClient.sendToApi(textoRecibidoWA);
 
+                String wa_id = new org.json.JSONObject(textoRecibidoWA)
+                    .getJSONArray("entry")
+                    .getJSONObject(0)
+                    .getJSONArray("changes")
+                    .getJSONObject(0)
+                    .getJSONObject("value")
+                    .getJSONArray("contacts")
+                    .getJSONObject(0)
+                    .getString("wa_id");
+
                 // Guardar el mensaje en un archivo
                 try {
-                    String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    StringBuilder nombreArchivo = new StringBuilder("msg-");
-                    Random rnd = new Random();
-                    for (int i = 0; i < 16; i++) {
-                        nombreArchivo.append(caracteres.charAt(rnd.nextInt(caracteres.length())));
-                    }
-                    String archivoNombre = nombreArchivo.toString() + ".json";
+                    String nameFile =  "msg-" + wa_id.toString() + ".txt";
 
-                    String carpeta = application.getRealPath("/messages");
-                    File carpetaDirectorio = new File(carpeta);
-                    if (!carpetaDirectorio.exists()) {
-                        carpetaDirectorio.mkdirs();
+                    String folder = application.getRealPath("/messages");
+
+                    File path = new File(folder);
+
+                    if (!path.exists()) {
+                        path.mkdirs();
                     }
 
-                    String archivo = carpeta + File.separator + archivoNombre;
+                    String file = folder + File.separator + nameFile;
                     FileWriter fWriter = null;
                     try {
-                        fWriter = new FileWriter(archivo);
-                        fWriter.write(textoRecibidoWA);
-                    } catch (IOException e) {
-                        out.print("Error al guardar el mensaje: " + e.getMessage());
+                        fWriter = new FileWriter(file, true);
+                        fWriter.write(textoRecibidoWA + "\n");
+                    } catch (Exception e) {
+                        logger.error("Error al guardar el mensaje: " + e.getMessage());
                     } finally {
                         if (fWriter != null) {
-                            try {
-                                fWriter.close();
-                            } catch (IOException e) {
-                                out.print("Error al cerrar el archivo: " + e.getMessage());
-                            }
+                             fWriter.close();
                         }
                     }
-                } catch (IOException e) {
-                    out.print("Error al guardar el mensaje: " + e.getMessage());
+                } catch (Exception e) {
+                    logger.error("Error al guardar el mensaje: " + e.getMessage());
                 }
-            } else {
-                out.print("No se envió el mensaje a la API-Springboot.");
-            }
+            } 
+
         } else {
-            out.print("No se recibieron datos.");
+            logger.info("No se recibió ningún mensaje.");
         }
+
     } catch (Exception e) {
-        out.print("Error: " + e.getMessage());
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        logger.error("Error: " + e.getMessage());
     }
 %>
