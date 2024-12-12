@@ -19,6 +19,9 @@ public class WebhookClient {
         setupLogger();
     }
 
+    // ======================================================
+    //   Incializa el logger para el controlador de Webhook
+    // ======================================================
     private static void setupLogger() {
         try {
             FileHandler fileHandler = new FileHandler(dotenv.get("PATH_WEBHOOK_CONTROLER_LOGS"), true);
@@ -31,6 +34,9 @@ public class WebhookClient {
         }
     }
 
+    // ======================================================
+    //   Envia la respuesta al Back-end
+    // ======================================================
     public static void sendToApi(String jsonData) {
         try {
             HttpClient client = HttpClient.newHttpClient();
