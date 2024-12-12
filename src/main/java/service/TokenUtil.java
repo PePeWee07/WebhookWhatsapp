@@ -9,6 +9,9 @@ public class TokenUtil {
 
     private static final Dotenv dotenv = Dotenv.load();
 
+    // ======================================================
+    //   Obtiene el token de Webhook desde las variables de entorno
+    // ======================================================
     public static String getTokenFromEnv() {
         try {
             String token = dotenv.get("TOKEN_API");
@@ -23,4 +26,3 @@ public class TokenUtil {
         }
     }
 }
-

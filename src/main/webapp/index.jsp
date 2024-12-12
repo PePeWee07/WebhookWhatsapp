@@ -32,10 +32,8 @@
      * RECEPCION DE MENSAJES
      */
     try {
-        // Confirmar recepción con HTTP 200 OK inmediatamente
         response.setStatus(HttpServletResponse.SC_OK);
 
-        // Leer los datos del cuerpo de la solicitud
         ServletInputStream mServletInputStream = request.getInputStream();
         int tam = request.getContentLength();
 
@@ -51,10 +49,7 @@
             }
 
             String textoRecibidoWA = stringBuilder.toString();
-            //logger.info("CONTROL-MESSAGE: " + textoRecibidoWA);
 
-
-            // Procesar el mensaje recibido
             if (textoRecibidoWA.contains("contacts")) {
                 WebhookClient.sendToApi(textoRecibidoWA);
 
@@ -68,7 +63,6 @@
                     .getJSONObject(0)
                     .getString("wa_id");
 
-                // Guardar el mensaje en un archivo
                 try {
                     String nameFile =  "msg-" + wa_id.toString() + ".txt";
 
@@ -89,7 +83,7 @@
                         logger.error("Error al guardar el mensaje: " + e.getMessage());
                     } finally {
                         if (fWriter != null) {
-                             fWriter.close();
+                            fWriter.close();
                         }
                     }
                 } catch (Exception e) {
