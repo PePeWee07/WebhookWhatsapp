@@ -9,11 +9,9 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import java.util.logging.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
+import service.Utils;
 public class WebhookClient {
     private static final Logger LOGGER = Logger.getLogger(WebhookClient.class.getName());
-    private static final Dotenv dotenv = Dotenv.load();
 
     static {
         setupLogger();
@@ -24,7 +22,7 @@ public class WebhookClient {
     // ======================================================
     private static void setupLogger() {
         try {
-            FileHandler fileHandler = new FileHandler(dotenv.get("PATH_WEBHOOK_CONTROLER_LOGS"), true);
+            FileHandler fileHandler = new FileHandler(Utils.getPathLogs(), true);
             fileHandler.setEncoding("UTF-8");
             fileHandler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(fileHandler);
@@ -41,8 +39,9 @@ public class WebhookClient {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(dotenv.get("URL_BACKEND")))
+                    .uri(URI.create(Utils.getEndpointBackEnd()))
                     .header("Content-Type", "application/json")
+                    .header(Utils.getApiKeyHeader(), Utils.getApiKey())
                     .POST(BodyPublishers.ofString(jsonData))
                     .build();
 
