@@ -9,7 +9,6 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import java.util.logging.*;
 
-import service.Utils;
 public class WebhookClient {
     private static final Logger LOGGER = Logger.getLogger(WebhookClient.class.getName());
 

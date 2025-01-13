@@ -1,6 +1,6 @@
 <%@page import="java.io.*"%>
 <%@page import="service.WebhookClient"%>
-<%@page import="service.TokenUtil"%>
+<%@page import="service.Utils"%>
 <%@page import="java.util.Random"%>
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="org.json.JSONObject" %>
@@ -13,7 +13,7 @@
      * VERIFICACION DEL WEBHOOK
      */
     try {
-        String token = TokenUtil.getTokenFromEnv();
+        String token = Utils.getTokenFromEnv();
         String palabraReto = request.getParameter("hub.challenge");
         String tokenVerificacion = request.getParameter("hub.verify_token");
 
