@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  webhook:
+    container_name: webhook_app
+    image: pepewee/webhook_app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    restart: always
+    networks:
+      - virtual_assistant_network
+
+volumes:
+  webhook_logs:
+  webhook_messages:
+
+networks:
+  virtual_assistant_network:
+    external: true  # Usamos la red creada manualmente
