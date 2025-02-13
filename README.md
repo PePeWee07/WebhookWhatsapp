@@ -1,17 +1,43 @@
-# Iniciar Proyecto
+# Proyecto Webhook - WhatsApp API Cloud
 
-```powershell
-docker-compose up -d
-```
+Este proyecto provee un servicio de Webhook para interactuar con la API de WhatsApp Cloud. Utiliza contenedores Docker para levantar rápidamente los componentes necesarios y simplificar la configuración.
 
-### Enviroments
-```bash
+## Requisitos
+
+- **Docker** >= 19.03  
+- **Docker Compose** >= 1.25  
+
+Asegúrate de tener instalados Docker y Docker Compose antes de continuar.
+
+## Configuración de Variables de Entorno
+
+Crea un archivo llamado `.env` en la raíz del proyecto con el siguiente contenido (o ajusta los valores según tus necesidades):
+
+```properties
 PATH_WEBHOOK_CONTROLER_LOGS="logs/webhookController.log"
 URL_BACKEND="http://whatsapp-api-cloud-app:8082/api/v1/whatsapp/receive"
 TOKEN_API="my-secure-token-api-webhook"
 API_KEY_HEADER="X-API-KEY"
 API_KEY="my-secure-api-key"
 MESSAGE_PATH="/usr/local/tomcat/webapps/miapp/messages"
+```
+## Descripción de las variables
+- `PATH_WEBHOOK_CONTROLER_LOGS`: Ruta donde se almacenarán los logs del Webhook.
+
+- `URL_BACKEND`: URL del endpoint donde se enviarán los mensajes recibidos por el Webhook.
+
+- `TOKEN_API`: Token de seguridad para la API del Webhook.
+
+- `API_KEY_HEADER`: Nombre de la cabecera que contendrá la clave de la API.
+
+- `API_KEY`: Clave secreta utilizada para autenticar las solicitudes.
+
+- `MESSAGE_PATH`: Directorio donde se almacenarán los mensajes procesados.
+
+## Iniciar Proyecto
+
+```powershell
+docker-compose up -d
 ```
 
 ## Ejemplo de enviar mensaje JSON
@@ -85,7 +111,6 @@ MESSAGE_PATH="/usr/local/tomcat/webapps/miapp/messages"
 
 ## Ejemplo de recivir mensaje JSON
 
-### Glosario de JSON recividos
 ```json
 {
   "object": "whatsapp_business_account",
@@ -120,6 +145,7 @@ MESSAGE_PATH="/usr/local/tomcat/webapps/miapp/messages"
   ]
 }
 ```
+### Glosario de JSON recividos
 
 | Campo                     | Descripción                                                             |
 |---------------------------|-------------------------------------------------------------------------|
@@ -145,5 +171,4 @@ MESSAGE_PATH="/usr/local/tomcat/webapps/miapp/messages"
 | `type`                    | Tipo de mensaje, como `text`.                                           |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
-## Mas ejemplos: 
-    https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#mensajes-recibidos
+### Mas ejemplos: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#mensajes-recibidos
