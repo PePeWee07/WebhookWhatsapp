@@ -1,53 +1,20 @@
 # Iniciar Proyecto
-```cmd
-mvn tomcat7:run
-```
-
-# Configuración del Proyecto
-
-Este proyecto utiliza variables de entorno para gestionar configuraciones sensibles como los tokens de autenticación.
-
-## Configuración de Variables de Entorno
-
-Para que el proyecto funcione correctamente, es necesario configurar una variable de entorno que almacene el token utilizado para la autenticación de los webhooks.
-
-## Cómo Configurar
-
-### Windows
-
-1. Abre el Panel de Control.
-2. Navega a Sistema y seguridad > Sistema > Configuración avanzada del sistema.
-3. Haz clic en Variables de entorno.
-4. En Variables del sistema, haz clic en Nueva.
-5. Introduce el nombre de la variable, por ejemplo, `TOKEN_API`.
-6. Introduce el valor del token.
-7. Haz clic en OK para guardar los cambios.
-
-#### Alternativa Powershell
 
 ```powershell
-$env:TOKEN_API = "TU_TOKEN"
-echo $env:TOKEN_API
+docker-compose up -d
 ```
 
-#### Alternativa CMD
-
-```cmd
-set TOKEN_API=TU_TOKEN
-echo %TOKEN_API%
-```
-
-### Linux/Mac
-
-Para configurar la variable de entorno en sistemas basados en Linux, puedes agregarla a tu archivo `.bashrc` o `.profile`, dependiendo de tu shell.
-
+### Enviroments
 ```bash
-export TOKEN_API="tu_token_aquí"
+PATH_WEBHOOK_CONTROLER_LOGS="logs/webhookController.log"
+URL_BACKEND="http://whatsapp-api-cloud-app:8082/api/v1/whatsapp/receive"
+TOKEN_API="my-secure-token-api-webhook"
+API_KEY_HEADER="X-API-KEY"
+API_KEY="my-secure-api-key"
+MESSAGE_PATH="/usr/local/tomcat/webapps/miapp/messages"
 ```
 
-## Glosario de JSON recividos
-
-### Ejemplo de Mensaje Saliente JSON
+## Ejemplo de enviar mensaje JSON
 
 ```json
 {
@@ -89,6 +56,7 @@ export TOKEN_API="tu_token_aquí"
 }
 ```
 
+### Glosario de JSON recividos
 | Campo                     | Descripción                                                             |
 |---------------------------|-------------------------------------------------------------------------|
 | `object`                  | Tipo de objeto, en este caso, una cuenta de negocio de WhatsApp.        |
@@ -115,8 +83,9 @@ export TOKEN_API="tu_token_aquí"
 | `category`                | Categoría del servicio bajo el modelo de precios, como `service`.       |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
-### Ejemplo de Mensaje Entrante JSON
+## Ejemplo de recivir mensaje JSON
 
+### Glosario de JSON recividos
 ```json
 {
   "object": "whatsapp_business_account",
@@ -176,125 +145,5 @@ export TOKEN_API="tu_token_aquí"
 | `type`                    | Tipo de mensaje, como `text`.                                           |
 | `field`                   | Campo que indica el tipo de cambio, en este caso, `messages`.           |
 
-### Ejemplo de reaccion a un mensaje
-- El siguiente es un ejemplo de un mensaje de reacción recibido de parte de un cliente. No recibirás este webhook si el mensaje al que reaccionó el cliente tiene más de 30 días.
-
-```json
-{
-  "object": "whatsapp_business_account",
-  "entry": [
-    {
-      "id": "382874548252970",
-      "changes": [
-        {
-          "value": {
-            "messaging_product": "whatsapp",
-            "metadata": {
-              "display_phone_number": "15551765358",
-              "phone_number_id": "435688539630512"
-            },
-            "contacts": [
-              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
-            ],
-            "messages": [
-              {
-                "from": "593983439289",
-                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMDdBMEQ2QUVFNTBDNDA5NjFBQQA=",
-                "timestamp": "1729708958",
-                "type": "reaction",
-                "reaction": {
-                  "message_id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMEUzMUM3RUEwRjI4RTdGMUY4RgA=",
-                  "emoji": "\ud83d\ude22"
-                }
-              }
-            ]
-          },
-          "field": "messages"
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Ejemplo de mensaje multimedia
-```json
-{
-  "object": "whatsapp_business_account",
-  "entry": [
-    {
-      "id": "382874548252970",
-      "changes": [
-        {
-          "value": {
-            "messaging_product": "whatsapp",
-            "metadata": {
-              "display_phone_number": "15551765358",
-              "phone_number_id": "435688539630512"
-            },
-            "contacts": [
-              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
-            ],
-            "messages": [
-              {
-                "from": "593983439289",
-                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMDczRDhGRjQzMEE3QjIwQTNFNgA=",
-                "timestamp": "1729709150",
-                "type": "image",
-                "image": {
-                  "mime_type": "image/jpeg",
-                  "sha256": "76BcgW2dCgcN34E8bqTaM0DRLvpsuyrUbt0SR4pz9iU=",
-                  "id": "1076724067255163"
-                }
-              }
-            ]
-          },
-          "field": "messages"
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Ejemplo de mensaje Sticker
-```json
-{
-  "object": "whatsapp_business_account",
-  "entry": [
-    {
-      "id": "382874548252970",
-      "changes": [
-        {
-          "value": {
-            "messaging_product": "whatsapp",
-            "metadata": {
-              "display_phone_number": "15551765358",
-              "phone_number_id": "435688539630512"
-            },
-            "contacts": [
-              { "profile": { "name": "PePe" }, "wa_id": "593983439289" }
-            ],
-            "messages": [
-              {
-                "from": "593983439289",
-                "id": "wamid.HBgMNTkzOTgzNDM5Mjg5FQIAEhgWM0VCMENDNUNCMzFERTFFQzlERjAxMgA=",
-                "timestamp": "1729709268",
-                "type": "sticker",
-                "sticker": {
-                  "mime_type": "image/webp",
-                  "sha256": "FxEleR33uQpynY3h/zHzZedjMEmVK/UEdfKGFWaUZnk=",
-                  "id": "1606242173110184",
-                  "animated": false
-                }
-              }
-            ]
-          },
-          "field": "messages"
-        }
-      ]
-    }
-  ]
-}
-```
-### Mas ejemplos: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#mensajes-recibidos
+## Mas ejemplos: 
+    https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#mensajes-recibidos
