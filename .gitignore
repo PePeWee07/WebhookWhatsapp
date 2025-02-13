@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 logs/
 src/main/webapp/messages/
-# .env
+.env
 
 ### STS ###
 .apt_generated
