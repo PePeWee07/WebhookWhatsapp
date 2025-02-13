@@ -66,7 +66,10 @@
                 try {
                     String nameFile =  "msg-" + wa_id.toString() + ".txt";
 
-                    String folder = application.getRealPath("/messages");
+                    String folder = Utils.getMessageFolder();
+                    if (folder == null) {
+                        folder = application.getRealPath("/messages");
+                    }
 
                     File path = new File(folder);
 

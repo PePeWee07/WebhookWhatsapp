@@ -88,4 +88,20 @@ public class Utils {
             return null;
         }
     }
+
+    // ======================================================
+    //   Obtener el folder del mensaje
+    // ======================================================
+    public static String getMessageFolder() {
+        try {
+            String folder = System.getenv("MESSAGE_PATH");
+            if (folder == null || folder.isEmpty()) {
+                System.out.println("'MESSAGE_PATH' no encontrado");
+            }
+            return folder;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

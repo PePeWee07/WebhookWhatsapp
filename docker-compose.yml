@@ -12,6 +12,11 @@ services:
     restart: always
     networks:
       - virtual_assistant_network
+    volumes:
+      - webhook_logs:/usr/local/tomcat/logs
+      - webhook_messages:/usr/local/tomcat/webapps/miapp/messages
+    environment:
+      - TZ=America/Guayaquil
 
 volumes:
   webhook_logs:
@@ -19,4 +24,4 @@ volumes:
 
 networks:
   virtual_assistant_network:
-    external: true  # Usamos la red creada manualmente
+    external: true
