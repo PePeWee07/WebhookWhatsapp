@@ -2,6 +2,14 @@
 
 Este proyecto provee un servicio de Webhook para interactuar con la API de WhatsApp Cloud. Utiliza contenedores Docker para levantar rápidamente los componentes necesarios y simplificar la configuración.
 
+## Repositorios Necesarios
+#### **AI Server**
+Repositorio: [TicAI-Support](https://github.com/PePeWee07/TicAI-Support.git)
+#### **ERP Simulator**
+Repositorio: [ERP-Simulator](https://github.com/PePeWee07/ERP_simulator.git)
+#### **WhatsAppApiCloud_ApiRest**
+Repositorio: [Back-end](https://github.com/PePeWee07/WhatsAppApiCloud_ApiRest.git)
+
 ## Requisitos
 
 - **Docker** >= 19.03  
