@@ -13,13 +13,18 @@ RUN mvn clean package -DskipTests
 FROM tomcat:9.0
 
 # Instalamos unzip para descomprimir el WAR
-RUN apt update && apt install unzip -y
+RUN apt update && apt install unzip -y && apt install nano -y
 
 # Copiamos el .war generado a Tomcat con el nombre correcto
 COPY --from=build /app/target/webhook.war /usr/local/tomcat/webapps/miapp.war
 
+# Copiar la aplicación manager para que Tomcat la despliegue
+RUN cp -r /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager
+
+# Copiamos la configuración modificada del manager
+COPY config/manager-context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 # Configuramos el usuario y roles en Tomcat
-COPY tomcat-users.xml /usr/local/tomcat/conf/
+COPY config/tomcat-users.xml /usr/local/tomcat/conf/
 
 # Forzamos a Tomcat a descomprimir el WAR
 RUN mkdir -p /usr/local/tomcat/webapps/miapp && \
