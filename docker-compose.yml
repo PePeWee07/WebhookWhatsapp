@@ -3,7 +3,7 @@ version: '3.9'
 services:
   webhook:
     container_name: webhook_app
-    image: pepewee/webhook_app:latest
+    image: pepewee/whatsapp-webhook:latest
     build:
       context: .
       dockerfile: Dockerfile
