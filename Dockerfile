@@ -31,11 +31,8 @@ RUN mkdir -p /usr/local/tomcat/webapps/miapp && \
     unzip /usr/local/tomcat/webapps/miapp.war -d /usr/local/tomcat/webapps/miapp && \
     rm /usr/local/tomcat/webapps/miapp.war
 
-# Creamos las carpetas necesarias para logs y mensajes (evita errores si no existen)
+# Creamos las carpetas necesarias para mensajes (evita errores si no existen)
 RUN mkdir -p /usr/local/tomcat/webapps/miapp/messages
-
-# Copiar el archivo .env al contenedor
-COPY .env /usr/local/tomcat/.env
 
 # Exponemos el puerto de Tomcat
 EXPOSE 8080

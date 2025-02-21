@@ -3,7 +3,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Utils {
 
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     // ======================================================
     //   Obtiene el token de Webhook 

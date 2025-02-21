@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8080"
+    env_file:
+      - .env
     restart: always
     networks:
       - virtual_assistant_network
