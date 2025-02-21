@@ -94,7 +94,7 @@ public class Utils {
     // ======================================================
     public static String getMessageFolder() {
         try {
-            String folder = System.getenv("MESSAGE_PATH");
+            String folder = dotenv.get("MESSAGE_PATH");
             if (folder == null || folder.isEmpty()) {
                 System.out.println("'MESSAGE_PATH' no encontrado");
             }
