@@ -32,7 +32,7 @@ RUN mkdir -p /usr/local/tomcat/webapps/miapp && \
     rm /usr/local/tomcat/webapps/miapp.war
 
 # Creamos las carpetas necesarias para mensajes (evita errores si no existen)
-RUN mkdir -p /usr/local/tomcat/webapps/miapp/messages
+RUN mkdir -p /usr/local/tomcat/logs/messages
 
 # Exponemos el puerto de Tomcat
 EXPOSE 8080

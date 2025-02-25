@@ -43,9 +43,7 @@
             StringBuilder stringBuilder = new StringBuilder();
 
             while ((retVal = mServletInputStream.read(httpInData)) != -1) {
-                for (int i = 0; i < retVal; i++) {
-                    stringBuilder.append((char) httpInData[i]);
-                }
+                stringBuilder.append(new String(httpInData, 0, retVal));
             }
 
             String textoRecibidoWA = stringBuilder.toString();
@@ -53,7 +51,7 @@
             if (textoRecibidoWA.contains("contacts")) {
                 WebhookClient.sendToApi(textoRecibidoWA);
 
-                String wa_id = new org.json.JSONObject(textoRecibidoWA)
+                String wa_id = new JSONObject(textoRecibidoWA)
                     .getJSONArray("entry")
                     .getJSONObject(0)
                     .getJSONArray("changes")
@@ -63,41 +61,40 @@
                     .getJSONObject(0)
                     .getString("wa_id");
 
-                try {
-                    String nameFile =  "msg-" + wa_id.toString() + ".txt";
+                String timestamp = new JSONObject(textoRecibidoWA)
+                    .getJSONArray("entry")
+                    .getJSONObject(0)
+                    .getJSONArray("changes")
+                    .getJSONObject(0)
+                    .getJSONObject("value")
+                    .getJSONArray("messages")
+                    .getJSONObject(0)
+                    .getString("timestamp");
+                long ts = Long.parseLong(timestamp);
 
-                    String folder = Utils.getMessageFolder();
-                    if (folder == null) {
-                        folder = application.getRealPath("/messages");
-                    }
+                String nameFile = "msg-" + wa_id + ".txt";
+                String folder = Utils.getMessageFolder();
+                if (folder == null) {
+                    folder = application.getRealPath("/messages");
+                }
 
-                    File path = new File(folder);
+                File path = new File(folder);
+                if (!path.exists()) {
+                    path.mkdirs();
+                }
 
-                    if (!path.exists()) {
-                        path.mkdirs();
-                    }
-
-                    String file = folder + File.separator + nameFile;
-                    FileWriter fWriter = null;
-                    try {
-                        fWriter = new FileWriter(file, true);
-                        fWriter.write(textoRecibidoWA + "\n");
-                    } catch (Exception e) {
-                        logger.error("Error al guardar el mensaje: " + e.getMessage());
-                    } finally {
-                        if (fWriter != null) {
-                            fWriter.close();
-                        }
-                    }
+                String file = folder + File.separator + nameFile;
+                try (FileWriter fWriter = new FileWriter(file, true)) {
+                    String formattedDate = Utils.convertTimeStamp(ts);
+                    fWriter.write(formattedDate + textoRecibidoWA + "\n");
                 } catch (Exception e) {
                     logger.error("Error al guardar el mensaje: " + e.getMessage());
                 }
-            } 
+            }
 
         } else {
             logger.info("No se recibió ningún mensaje.");
         }
-
     } catch (Exception e) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         logger.error("Error: " + e.getMessage());

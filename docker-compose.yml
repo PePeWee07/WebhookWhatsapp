@@ -16,13 +16,11 @@ services:
       - virtual_assistant_network
     volumes:
       - webhook_logs:/usr/local/tomcat/logs
-      - webhook_messages:/usr/local/tomcat/webapps/miapp/messages
     environment:
       - TZ=America/Guayaquil
 
 volumes:
   webhook_logs:
-  webhook_messages:
 
 networks:
   virtual_assistant_network:

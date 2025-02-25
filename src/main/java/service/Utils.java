@@ -1,5 +1,10 @@
 package service;
 import io.github.cdimascio.dotenv.Dotenv;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class Utils {
 
@@ -103,5 +108,17 @@ public class Utils {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    // ======================================================
+    //   Obtener fecha formateada
+    // ======================================================
+    public static String convertTimeStamp(long timestamp) {
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        ZoneId zoneGuayaquil = ZoneId.of("America/Guayaquil");
+        ZonedDateTime zdtGuayaquil = ZonedDateTime.ofInstant(instant, zoneGuayaquil);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = zdtGuayaquil.format(formatter);
+        return formattedDate;
     }
 }
