@@ -1,10 +1,10 @@
 <%@page import="java.io.*"%>
-<%@page import="service.WebhookClient"%>
-<%@page import="service.Utils"%>
 <%@page import="java.util.Random"%>
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.json.JSONArray" %>
+<%@page import="com.ucacue.app.service.WebhookClient"%>
+<%@page import="com.ucacue.app.service.Utils"%>
 <%
 
     Logger logger = Logger.getLogger(getClass());

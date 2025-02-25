@@ -1,4 +1,4 @@
-package service;
+package com.ucacue.app.service;
 
 import java.net.URI;
 import java.net.http.HttpClient;

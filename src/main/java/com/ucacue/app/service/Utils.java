@@ -1,4 +1,4 @@
-package service;
+package com.ucacue.app.service;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.time.Instant;
 import java.time.ZoneId;
