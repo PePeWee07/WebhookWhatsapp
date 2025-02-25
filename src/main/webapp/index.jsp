@@ -1,13 +1,13 @@
-<%@page import="java.io.*"%>
-<%@page import="java.util.Random"%>
-<%@ page import="org.apache.log4j.Logger" %>
+<%@ page import="org.apache.logging.log4j.Logger" %>
+<%@ page import="org.apache.logging.log4j.LogManager" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.Random" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.json.JSONArray" %>
-<%@page import="com.ucacue.app.service.WebhookClient"%>
-<%@page import="com.ucacue.app.service.Utils"%>
+<%@ page import="com.ucacue.app.service.WebhookClient" %>
+<%@ page import="com.ucacue.app.service.Utils" %>
 <%
-
-    Logger logger = Logger.getLogger(getClass());
+    Logger logger = LogManager.getLogger(getClass());
 
     /*
      * VERIFICACION DEL WEBHOOK
