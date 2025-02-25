@@ -18,8 +18,29 @@ services:
       - webhook_logs:/usr/local/tomcat/logs
     environment:
       - TZ=America/Guayaquil
+  
+  db_webhook:
+    container_name: db-webhook-db
+    image: postgres:13.3
+    ports:
+      - "5434:5432"
+    networks:
+      - virtual_assistant_network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
+  postgres_data:
   webhook_logs:
 
 networks:
