@@ -7,7 +7,6 @@
 <%@ page import="com.ucacue.app.service.WebhookClient" %>
 <%@ page import="com.ucacue.app.service.Utils" %>
 <%@ page import="com.ucacue.app.service.message.MessageService" %>
-<%@ page import="com.ucacue.app.model.entity.MessageEntity" %>
 <%
     Logger logger = LogManager.getLogger(getClass());
 
