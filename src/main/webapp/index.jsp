@@ -6,6 +6,8 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="com.ucacue.app.service.WebhookClient" %>
 <%@ page import="com.ucacue.app.service.Utils" %>
+<%@ page import="com.ucacue.app.service.message.MessageService" %>
+<%@ page import="com.ucacue.app.model.entity.MessageEntity" %>
 <%
     Logger logger = LogManager.getLogger(getClass());
 
@@ -51,29 +53,22 @@
             if (textoRecibidoWA.contains("contacts")) {
                 WebhookClient.sendToApi(textoRecibidoWA);
 
-                String wa_id = new JSONObject(textoRecibidoWA)
-                    .getJSONArray("entry")
-                    .getJSONObject(0)
-                    .getJSONArray("changes")
-                    .getJSONObject(0)
-                    .getJSONObject("value")
-                    .getJSONArray("contacts")
-                    .getJSONObject(0)
-                    .getString("wa_id");
+                JSONObject json = new JSONObject(textoRecibidoWA);
+                JSONObject entry = json.getJSONArray("entry").getJSONObject(0);
+                JSONObject change = entry.getJSONArray("changes").getJSONObject(0);
+                JSONObject value = change.getJSONObject("value");
+                String wa_id = value.getJSONArray("contacts").getJSONObject(0).getString("wa_id");
+                JSONObject message = value.getJSONArray("messages").getJSONObject(0);
+                String messageId = message.getString("id");
+                String timestamp = message.getString("timestamp");
+                String type = message.getString("type");
+                String content = message.getJSONObject("text").getString("body");
 
-                String timestamp = new JSONObject(textoRecibidoWA)
-                    .getJSONArray("entry")
-                    .getJSONObject(0)
-                    .getJSONArray("changes")
-                    .getJSONObject(0)
-                    .getJSONObject("value")
-                    .getJSONArray("messages")
-                    .getJSONObject(0)
-                    .getString("timestamp");
                 long ts = Long.parseLong(timestamp);
 
                 String nameFile = "msg-" + wa_id + ".txt";
                 String folder = Utils.getMessageFolder();
+                String formattedDate = Utils.convertTimeStamp(ts);
                 if (folder == null) {
                     folder = application.getRealPath("/messages");
                 }
@@ -85,10 +80,9 @@
 
                 String file = folder + File.separator + nameFile;
                 try (FileWriter fWriter = new FileWriter(file, true)) {
-                    String formattedDate = Utils.convertTimeStamp(ts);
                     fWriter.write(formattedDate + textoRecibidoWA + "\n");
                 } catch (Exception e) {
-                    logger.error("Error al guardar el mensaje: " + e.getMessage());
+                    logger.error("Error al guardar log del mensaje: " + e.getMessage());
                 }
             }
 
