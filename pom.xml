@@ -42,6 +42,13 @@
         <optional>true</optional>
     </dependency>
 
+    <!-- Spring Data JPA -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>2.7.5</version>
+    </dependency>
+
     <!-- PostgreSQL -->
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -55,6 +62,13 @@
         <groupId>jakarta.validation</groupId>
         <artifactId>jakarta.validation-api</artifactId>
         <version>3.0.2</version>
+    </dependency>
+
+    <!-- Jakarta persistence -->
+    <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.2.0</version>
     </dependency>
 
     <!-- log4j V2-->
