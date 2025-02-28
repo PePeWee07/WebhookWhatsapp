@@ -14,7 +14,7 @@ export interface Change {
 }
 
 export interface Value {
-  messagingProduct: string;
+  messaging_product: string;
   metadata: Metadata;
   contacts?: ValueContact[];
   messages?: Message[];
@@ -23,7 +23,7 @@ export interface Value {
 
 export interface ValueContact {
   profile: Profile;
-  waId: string;
+  wa_id: string;
 }
 
 export interface Profile {
@@ -67,7 +67,7 @@ export interface MessageContact {
 export interface Address {
   city: string;
   country: string;
-  countryCode: string;
+  country_code: string;
   state: string;
   street: string;
   type: string;
@@ -80,10 +80,10 @@ export interface Email {
 }
 
 export interface NameClass {
-  formattedName: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
+  formatted_name: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
   suffix: string;
   prefix: string;
 }
@@ -96,7 +96,7 @@ export interface Org {
 
 export interface Phone {
   phone: string;
-  waId: string;
+  wa_id: string;
   type: string;
 }
 
@@ -108,12 +108,12 @@ export interface URLItem {
 export interface Context {
   from: string;
   id: string;
-  referredProduct?: ReferredProduct;
+  referred_product?: ReferredProduct;
 }
 
 export interface ReferredProduct {
-  catalogId: string;
-  productRetailerId: string;
+  catalog_id: string;
+  product_retailer_id: string;
 }
 
 export interface MessageError {
@@ -124,21 +124,21 @@ export interface MessageError {
 
 export interface Image {
   caption?: string;
-  mimeType: string;
+  mime_type: string;
   sha256: string;
   id: string;
 }
 
 export interface Sticker {
-  mimeType: string;
+  mime_ype: string;
   sha256: string;
   id: string;
 }
 
 export interface Interactive {
-  listReply?: ListReply;
+  list_reply?: ListReply;
   type: string;
-  buttonReply?: ButtonReply;
+  button_reply?: ButtonReply;
 }
 
 export interface ButtonReply {
@@ -160,34 +160,34 @@ export interface Location {
 }
 
 export interface Order {
-  catalogId: string;
-  productItems: ProductItem[];
+  catalog_id: string;
+  product_items: ProductItem[];
   text: string;
 }
 
 export interface ProductItem {
-  productRetailerId: string;
+  product_retailer_id: string;
   quantity: string;
   itemPrice: string;
   currency: string;
 }
 
 export interface Referral {
-  sourceUrl: string;
-  sourceId: string;
-  sourceType: string;
+  source_url: string;
+  source_id: string;
+  source_type: string;
   headline: string;
   body: string;
-  mediaType: string;
-  imageUrl: string;
-  videoUrl: string;
-  thumbnailUrl: string;
-  ctwaClid: string;
+  media_type: string;
+  image_url: string;
+  video_url: string;
+  thumbnail_url: string;
+  ctwa_clid: string;
 }
 
 export interface System {
   body: string;
-  newWaId: string;
+  new_wa_id: string;
   type: string;
 }
 
@@ -196,15 +196,15 @@ export interface Text {
 }
 
 export interface Metadata {
-  displayPhoneNumber: string;
-  phoneNumberId: string;
+  display_phone_number: string;
+  phone_number_id: string;
 }
 
 export interface Status {
   id: string;
   status: string;
   timestamp: string;
-  recipientId: string;
+  recipient_id: string;
   conversation?: Conversation;
   pricing?: Pricing;
   errors?: StatusError[];
@@ -212,7 +212,7 @@ export interface Status {
 
 export interface Conversation {
   id: string;
-  expirationTimestamp: string;
+  expiration_timestamp: string;
   origin: Origin;
 }
 
@@ -224,7 +224,7 @@ export interface StatusError {
   code: number | string;
   title: string;
   message?: string;
-  errorData?: ErrorData;
+  error_data?: ErrorData;
   href?: string;
 }
 
@@ -234,6 +234,6 @@ export interface ErrorData {
 
 export interface Pricing {
   billable: boolean;
-  pricingModel: string;
+  pricing_model: string;
   category: string;
 }

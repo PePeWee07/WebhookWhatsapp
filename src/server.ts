@@ -1,11 +1,6 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-import express from "express";
+import express, { Request, Response } from "express";
 import dotenv from 'dotenv';
+import { Whatsapp } from "./interface/WhatsAppInterface";
 dotenv.config();
 
 const app = express();
@@ -36,29 +31,38 @@ app.get("/webhook", (req , res) => {
 // ======================================================
 //   Recepcion de Mensajes
 // ======================================================
-app.post("/webhook", async (req, res) => {
-    const messageUser = JSON.stringify(req.body, null, 2);
+app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
+
+    const body: Whatsapp = req.body;
     
-    if(messageUser.includes("contacts")) {
+    if(body.entry[0].changes[0].value.contacts){ 
         //TODO: Enviar mensaje a Backend
 
-        console.log("Incoming webhook message:", messageUser);
+        console.log("Incoming webhook message:", body.entry[0].changes[0]);
 
-        // const waId = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0]?.wa_id;
+        //wa_id
+        const wa_id = body.entry[0].changes[0].value.contacts[0].wa_id;
+        //name
+        const name = body.entry[0].changes[0].value.contacts[0].profile.name;
+        //message_id
+        const messageId = body.entry[0].changes[0].value.messages?.[0]?.id || "";
+        //timestamp
+        const timestamp = body.entry[0].changes[0].value.messages?.[0].timestamp || "";
+        const date = new Date(Number(timestamp) * 1000);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        //content
+        const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
+        //type
+        const type = body.entry[0].changes[0].value.messages?.[0].type || "";
+
+        console.log("datos:", wa_id, name, messageId, formattedDate, content, type);
     }
-
-    // const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
-    // const waId = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0]?.wa_id;
-    // const messageId = message.id;
-    // const timestamp = message.timestamp;
-    // const type = message.type;
-    // const content = message.text?.body || "";
 
   res.sendStatus(200);
 });
 
 app.get("/", (_, res) => {
-  res.send(`<h1>Server is running on port ${PORT} + HotReload</h1>`);
+  res.send(`<h1>Server is running on port ${PORT}</h1>`);
 });
 
 app.listen(PORT, () => {
