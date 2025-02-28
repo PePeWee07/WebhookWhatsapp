@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import express from "express";
-import axios from "axios";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,7 +16,7 @@ const { WEBHOOK_VERIFY_TOKEN, PORT } = process.env;
 // ======================================================
 //   Verify Webhook
 // ======================================================
-app.get("/webhook", (req, res) => {
+app.get("/webhook", (req , res) => {
     const mode = req.query["hub.mode"];
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
@@ -38,23 +37,28 @@ app.get("/webhook", (req, res) => {
 //   Recepcion de Mensajes
 // ======================================================
 app.post("/webhook", async (req, res) => {
-  console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+    const messageUser = JSON.stringify(req.body, null, 2);
+    
+    if(messageUser.includes("contacts")) {
+        //TODO: Enviar mensaje a Backend
 
-  // check if the webhook request contains a message
-  const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+        console.log("Incoming webhook message:", messageUser);
 
-  // check if the incoming message contains text
-  if (message?.type === "text") {
-    // extract the business number to send the reply from it
-    const business_phone_number_id =
-      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-  }
+        // const waId = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0]?.wa_id;
+    }
+
+    // const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    // const waId = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0]?.wa_id;
+    // const messageId = message.id;
+    // const timestamp = message.timestamp;
+    // const type = message.type;
+    // const content = message.text?.body || "";
 
   res.sendStatus(200);
 });
 
-app.get("/", (req, res) => {
-  res.send(`<h1>Server is running on port ${PORT}</h1>`);
+app.get("/", (_, res) => {
+  res.send(`<h1>Server is running on port ${PORT} + HotReload</h1>`);
 });
 
 app.listen(PORT, () => {
