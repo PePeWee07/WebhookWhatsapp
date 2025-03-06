@@ -30,8 +30,8 @@ COPY --from=builder /app/build ./build
 # Crea la carpeta para los logs de mensajes
 RUN mkdir -p /app/logs/messages
 
-# Expone el puerto que utiliza tu aplicación (ajusta si es necesario)
-EXPOSE 3000
+# Expone el puerto
+EXPOSE 8081
 
 # Comando para iniciar la aplicación en producción
 CMD ["node", "build/server.js"]

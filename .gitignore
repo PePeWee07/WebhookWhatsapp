@@ -1,6 +1,8 @@
 # Dependencias de Node.js
 node_modules/
 
+build/
+
 # Archivos de log
 logs/
 *.log

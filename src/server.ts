@@ -58,11 +58,12 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
-      console.log('data: ', body);
+      console.log('data: ', body); //!debug
 
       //! Guardar logs del mensaje
       try {
         await appendLogEntry(body, wa_id);
+        console.log('Log guardado correctamente'); //!debug
       } catch (error) {
         logger.error('Error al guardar el log:', error);
       }

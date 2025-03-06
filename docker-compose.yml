@@ -17,7 +17,7 @@ services:
     networks:
       - virtual_assistant_network
     volumes:
-      - webhook_logs:/logs
+      - webhook_logs:/app/logs
     environment:
       - TZ=America/Guayaquil
 
