@@ -14,12 +14,12 @@ app.use(express.json());
 
 logger.info('Iniciando la aplicación...');
 
+const { WEBHOOK_VERIFY_TOKEN, PORT, URL_BACKEND, API_KEY_HEADER, API_KEY } = process.env;
+
 // ======================================================
 //   Verify Table DB
 // ======================================================
 createMessagesTable();
-
-const { WEBHOOK_VERIFY_TOKEN, PORT, URL_BACKEND, API_KEY_HEADER, API_KEY } = process.env;
 
 // ======================================================
 //   Verify Webhook
@@ -58,20 +58,21 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
-      //Guardar logs del mensaje
+      console.log('data: ', body);
+
+      //! Guardar logs del mensaje
       try {
         await appendLogEntry(body, wa_id);
-        console.log("Log guardado en archivo JSON para el número:", wa_id);
       } catch (error) {
-        console.error("Error al guardar el log JSON:", error);
+        logger.error('Error al guardar el log:', error);
       }
 
-      // Guardar mensaje en la base de datos
+      //! Guardar mensaje en la base de datos
       saveMessage(wa_id, name, messageId, formattedDate, content, type)
         .then((_savedMessage) => {})
         .catch((error) => {logger.error('Error al guardar el mensaje:', error)});
       
-      // Enviar mensaje a Backend
+      //! Enviar mensaje a Backend
       try {
         if (!URL_BACKEND) {
           logger.error('URL_BACKEND is not defined');
