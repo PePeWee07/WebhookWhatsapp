@@ -31,7 +31,7 @@ COPY --from=builder /app/build ./build
 RUN mkdir -p /app/logs/messages
 
 # Expone el puerto
-EXPOSE 8081
+EXPOSE 8080
 
 # Comando para iniciar la aplicación en producción
 CMD ["node", "build/server.js"]
