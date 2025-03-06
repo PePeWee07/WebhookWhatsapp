@@ -14,8 +14,11 @@
         "axios": "^1.6.7",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
+        "moment-timezone": "^0.5.47",
+        "pg": "^8.13.3",
         "webhook-ucacue": "file:",
-        "webhook-UCACUE": "file:"
+        "webhook-UCACUE": "file:",
+        "winston": "^3.17.0"
     },
     "engines": {
         "node": ">=16.0.0"
@@ -24,6 +27,7 @@
     "devDependencies": {
         "@types/express": "^5.0.0",
         "@types/node": "^22.13.5",
+        "@types/pg": "^8.11.11",
         "concurrently": "^9.1.2",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",

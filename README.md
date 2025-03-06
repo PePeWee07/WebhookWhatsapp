@@ -4,3 +4,6 @@ Install NPM:
 - dontenv
 - typescript
 - ts-node-dev
+- postgres
+- winston
+- moment-timezone

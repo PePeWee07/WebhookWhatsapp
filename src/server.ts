@@ -1,12 +1,25 @@
 import express, { Request, Response } from "express";
 import dotenv from 'dotenv';
 import { Whatsapp } from "./interface/WhatsAppInterface";
+import createMessagesTable from "./data/script";
+import saveMessage from "./data/dbOperations";
+import axios from 'axios';
+import logger from "./config/logger";
+import { appendLogEntry } from './config/phoneLogger';
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-const { WEBHOOK_VERIFY_TOKEN, PORT } = process.env;
+logger.info('Iniciando la aplicación...');
+
+// ======================================================
+//   Verify Table DB
+// ======================================================
+createMessagesTable();
+
+const { WEBHOOK_VERIFY_TOKEN, PORT, URL_BACKEND, API_KEY_HEADER, API_KEY } = process.env;
 
 // ======================================================
 //   Verify Webhook
@@ -20,7 +33,7 @@ app.get("/webhook", (req , res) => {
     if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
       // respond with 200 OK and challenge token from the request
       res.status(200).send(challenge);
-      console.log("Webhook verified successfully!");
+      logger.info('Webhook verificado exitosamente');
     } else {
       // respond with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403);
@@ -36,26 +49,42 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
     const body: Whatsapp = req.body;
     
     if(body.entry[0].changes[0].value.contacts){ 
-        //TODO: Enviar mensaje a Backend
+      const wa_id = body.entry[0].changes[0].value.contacts[0].wa_id;
+      const name = body.entry[0].changes[0].value.contacts[0].profile.name;
+      const messageId = body.entry[0].changes[0].value.messages?.[0]?.id || "";
+      const timestamp = body.entry[0].changes[0].value.messages?.[0].timestamp || "";
+      const date = new Date(Number(timestamp) * 1000);
+      const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+      const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
+      const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
-        console.log("Incoming webhook message:", body.entry[0].changes[0]);
+      //Guardar logs del mensaje
+      try {
+        await appendLogEntry(body, wa_id);
+        console.log("Log guardado en archivo JSON para el número:", wa_id);
+      } catch (error) {
+        console.error("Error al guardar el log JSON:", error);
+      }
 
-        //wa_id
-        const wa_id = body.entry[0].changes[0].value.contacts[0].wa_id;
-        //name
-        const name = body.entry[0].changes[0].value.contacts[0].profile.name;
-        //message_id
-        const messageId = body.entry[0].changes[0].value.messages?.[0]?.id || "";
-        //timestamp
-        const timestamp = body.entry[0].changes[0].value.messages?.[0].timestamp || "";
-        const date = new Date(Number(timestamp) * 1000);
-        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-        //content
-        const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
-        //type
-        const type = body.entry[0].changes[0].value.messages?.[0].type || "";
-
-        console.log("datos:", wa_id, name, messageId, formattedDate, content, type);
+      // Guardar mensaje en la base de datos
+      saveMessage(wa_id, name, messageId, formattedDate, content, type)
+        .then((_savedMessage) => {})
+        .catch((error) => {logger.error('Error al guardar el mensaje:', error)});
+      
+      // Enviar mensaje a Backend
+      try {
+        if (!URL_BACKEND) {
+          logger.error('URL_BACKEND is not defined');
+          throw new Error("URL_BACKEND is not defined");
+        }
+        await axios.post(URL_BACKEND, body, {
+          headers: { 
+            'Content-Type': 'application/json',
+             [API_KEY_HEADER as string]: API_KEY }
+        });
+      } catch (error) {
+        logger.error('Error al enviar los datos:', error);
+      }
     }
 
   res.sendStatus(200);
@@ -66,5 +95,5 @@ app.get("/", (_, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is listening on port: ${PORT}`);
+  logger.info(`Server is listening on port: ${PORT}`);
 });
