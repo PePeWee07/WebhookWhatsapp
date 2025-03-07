@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+const webhookStartTime = new Date();
 logger.info('Iniciando la aplicación...');
 
 const { WEBHOOK_VERIFY_TOKEN, PORT, URL_BACKEND, API_KEY_HEADER, API_KEY } = process.env;
@@ -44,7 +45,7 @@ app.get("/webhook", (req , res) => {
 // ======================================================
 //   Recepcion de Mensajes
 // ======================================================
-app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
+app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Promise<void> => {
 
     const body: Whatsapp = req.body;
     
@@ -57,6 +58,14 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response) => {
       const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
+
+      //!! Descartar mensajes al comparar fechas (UTC)
+      if (date < webhookStartTime) {
+        console.log("Mensaje descartado por ser anterior al inicio del webhook.");
+        res.sendStatus(200);
+        return;
+      }
+      
 
       //! Guardar logs del mensaje
       try {

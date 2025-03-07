@@ -13,9 +13,7 @@ const pool = new Pool({
   port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
 });
 
-pool.on('connect', () => {
-  logger.info('Conectado a la base de datos PostgreSQL');
-});
+pool.on('connect', () => {});
 
 pool.on('error', (err: any) => {
   logger.error('Error en la conexión de la base de datos:', err);

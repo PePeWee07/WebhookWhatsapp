@@ -5,7 +5,7 @@ WORKDIR /app
 # Copia los archivos de configuración de npm
 COPY package*.json ./
 
-# Instala todas las dependencias (incluyendo devDependencies, necesarias para compilar)
+# Instala todas las dependencias
 RUN npm install
 
 # Copia el resto del código fuente
