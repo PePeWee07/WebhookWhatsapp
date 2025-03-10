@@ -1,0 +1,36 @@
+config:
+  target: "http://localhost:8081"  # URL donde corre tu webhook
+  phases:
+    - duration: 60         # Prueba de 60 segundos
+      arrivalRate: 5       # 5 peticiones por segundo
+      name: "Bajo estres 💢"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      X-API-KEY: "my-secure-api-key"
+scenarios:
+  - name: "Prueba de Webhook POST"
+    flow:
+      - post:
+          url: "/webhook"
+          json:
+            object: "whatsapp_business_account"
+            entry:
+              - id: "382874548252970"
+                changes:
+                  - value:
+                      messaging_product: "whatsapp"
+                      metadata:
+                        display_phone_number: "15551765358"
+                        phone_number_id: "435688539630512"
+                      contacts:
+                        - profile:
+                            name: "PePe"
+                          wa_id: "593983439289"
+                      messages:
+                        - from: "593983439289"
+                          id: "wamid.XXXXXXXXXXXXXXXX"
+                          timestamp: "{{ $now | toNumber }}"
+                          text:
+                            body: "Mensaje de prueba"
+                          type: "text"

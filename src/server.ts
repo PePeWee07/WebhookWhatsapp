@@ -6,6 +6,8 @@ import saveMessage from "./data/dbOperations";
 import axios from 'axios';
 import logger from "./config/logger";
 import { appendLogEntry } from './config/phoneLogger';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -21,6 +23,21 @@ const { WEBHOOK_VERIFY_TOKEN, PORT, URL_BACKEND, API_KEY_HEADER, API_KEY } = pro
 //   Verify Table DB
 // ======================================================
 createMessagesTable();
+
+
+// ======================================================
+//   Seguridad basica
+// ======================================================
+  app.use(helmet());
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes,
+    message: 'Muchas peticiones desde esta IP, por favor intenta de nuevo en 15 minutos',
+    max: 100, // cada IP podrá hacer hasta 100 peticiones en ese período
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+  app.use(limiter);
+
 
 // ======================================================
 //   Verify Webhook
