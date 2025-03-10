@@ -46,10 +46,13 @@ app.get("/webhook", (req , res) => {
 //   Recepcion de Mensajes
 // ======================================================
 app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Promise<void> => {
+  
+  res.sendStatus(200);
 
+  try {
     const body: Whatsapp = req.body;
     
-    if(body.entry[0].changes[0].value.contacts){ 
+    if (body.entry[0].changes[0].value.contacts) { 
       const wa_id = body.entry[0].changes[0].value.contacts[0].wa_id;
       const name = body.entry[0].changes[0].value.contacts[0].profile.name;
       const messageId = body.entry[0].changes[0].value.messages?.[0]?.id || "";
@@ -59,22 +62,22 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
-      //! Guardar logs del mensaje
+      console.log("content: ", content); //! debug
+
+      //! Guardar logs y mensaje en la base de datos
       try {
         await appendLogEntry(body, wa_id);
       } catch (error) {
         logger.error('Error al guardar el log:', error);
       }
 
-      //! Guardar mensaje en la base de datos
       saveMessage(wa_id, name, messageId, formattedDate, content, type)
-        .then((_savedMessage) => {})
-        .catch((error) => {logger.error('Error al guardar el mensaje:', error)});
+        .then(() => {})
+        .catch((error) => { logger.error('Error al guardar el mensaje:', error) });
 
-      //!! Descartar mensajes al comparar fechas (UTC)
+      //! Descartar mensajes que sean anteriores al inicio del webhook
       if (date < webhookStartTime) {
         console.log("Mensaje descartado por ser anterior al inicio del webhook.");
-        res.sendStatus(200);
         return;
       }
 
@@ -87,14 +90,16 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
         await axios.post(URL_BACKEND, body, {
           headers: { 
             'Content-Type': 'application/json',
-             [API_KEY_HEADER as string]: API_KEY }
+            [API_KEY_HEADER as string]: API_KEY
+          }
         });
       } catch (error) {
         logger.error('Error al enviar los datos:', error);
       }
     }
-
-  res.sendStatus(200);
+  } catch (error) {
+    logger.error('Error en el procesamiento del webhook:', error);
+  }
 });
 
 app.get("/", (_, res) => {
