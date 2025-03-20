@@ -4,7 +4,7 @@ export const saveMessage = async (
   wa_id: string,
   name: string,
   messageId: string,
-  formattedDate: string,
+  formattedDate: Date,
   content: string,
   type: string
 ) => {
