@@ -104,8 +104,8 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
       //! Enviar mensaje a Backend
       try {
         if (!URL_BACKEND) {
-          logger.error('URL_BACKEND is not defined');
-          throw new Error("URL_BACKEND is not defined");
+          logger.error('enviroment URL_BACKEND is not defined');
+          throw new Error("enviroment URL_BACKEND is not defined");
         }
         await axios.post(URL_BACKEND, body, {
           headers: { 
