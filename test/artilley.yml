@@ -1,3 +1,10 @@
+# 🚀 Prueba de carga para un webhook de WhatsApp usando Artillery
+
+# ⚠️ ADVERTENCIA ⚠️
+# Desabilitar contenedor de IA antes de ejecutar este script.
+# Muchas peticiones pueden causar bloqueo del numero telefonico(wa_id) temporalmente.
+
+
 config:
   target: "http://localhost:8081"  # URL donde corre tu webhook
   phases:

@@ -2,28 +2,35 @@ version: '3.9'
 
 services:
   webhook:
-    container_name: webhook-app
-    image: pepewee/whatsapp-webhook:1.1.0-beta
-    depends_on:
-      db_webhook:
-        condition: service_healthy
+    container_name: webhook-app-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "8081:8080"
     env_file:
       - .env
-    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+    depends_on:
+      db_webhook:
+        condition: service_healthy
     networks:
       - virtual_assistant_network
-    volumes:
-      - webhook_logs:/app/logs
 
   db_webhook:
-    container_name: webhook-db
+    container_name: webhook-db-dev
     image: postgres:13.3
     ports:
       - "5434:5432"
     networks:
       - virtual_assistant_network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     env_file:
       - .env
     volumes:
@@ -35,10 +42,8 @@ services:
       retries: 5
       start_period: 30s
 
-
 volumes:
   postgres_data:
-  webhook_logs:
 
 networks:
   virtual_assistant_network:

@@ -81,7 +81,7 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
-      console.log("content: ", content); //! debug
+      console.log("New-Msg: ", content); //! debug
 
       //! Guardar logs y mensaje en la base de datos
       try {
