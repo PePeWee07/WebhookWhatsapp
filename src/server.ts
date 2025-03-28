@@ -12,8 +12,7 @@ import rateLimit from 'express-rate-limit';
 dotenv.config();
 
 const app = express();
-// 🔥 Configurar Express para confiar en los encabezados `X-Forwarded-For`
-app.set('trust proxy', 1); // 1 indica que hay un proxy antes de la aplicación
+app.set('trust proxy', 1);
 
 app.use(express.json());
 
@@ -123,7 +122,12 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
 });
 
 app.get("/", (_, res) => {
-  res.send(`<h1>Server is running on port ${PORT}</h1>`);
+  var date = new Date();
+  res.status(200).json({
+    status: 'ok',
+    message: 'API is running.',
+    timestamp: date.toLocaleString(),
+  });
 });
 
 app.listen(PORT, () => {

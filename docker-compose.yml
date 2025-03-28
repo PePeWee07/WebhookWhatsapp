@@ -18,8 +18,6 @@ services:
       - virtual_assistant_network
     volumes:
       - webhook_logs:/app/logs
-    environment:
-      - TZ=America/Guayaquil
 
   db_webhook:
     container_name: webhook-db
@@ -28,10 +26,8 @@ services:
       - "5434:5432"
     networks:
       - virtual_assistant_network
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
