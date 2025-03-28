@@ -121,7 +121,8 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
   }
 });
 
-app.get("/", (_, res) => {
+
+app.get("/health", (_, res) => {
   var date = new Date();
   res.status(200).json({
     status: 'ok',
