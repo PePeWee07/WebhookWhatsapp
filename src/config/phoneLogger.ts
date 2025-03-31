@@ -17,6 +17,6 @@ export async function appendLogEntry(body: any, phoneNumber: string) {
   try {
     await fs.appendFile(logFilePath, jsonEntry + ',\n', 'utf8');
   } catch (error) {
-    console.error("Error al apendar la entrada:", error);
+    console.error("Error en PhoneLogger:", error);
   }
 }

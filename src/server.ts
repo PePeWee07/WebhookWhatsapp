@@ -77,7 +77,6 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
       const messageId = body.entry[0].changes[0].value.messages?.[0]?.id || "";
       const timestamp = body.entry[0].changes[0].value.messages?.[0].timestamp || "";
       const date = new Date(Number(timestamp) * 1000);
-      // const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
       const content = body.entry[0].changes[0].value.messages?.[0].text?.body || "";
       const type = body.entry[0].changes[0].value.messages?.[0].type || "";
 
@@ -92,7 +91,7 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
 
       saveMessage(wa_id, name, messageId, date, content, type)
         .then(() => {})
-        .catch((error) => { logger.error('Error al guardar el mensaje:', error) });
+        .catch((error) => { error });
 
       //! Descartar mensajes que sean anteriores al inicio del webhook
       if (date < webhookStartTime) {
