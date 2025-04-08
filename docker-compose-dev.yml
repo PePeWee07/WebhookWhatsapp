@@ -13,6 +13,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - ./logs:/app/logs
     command: npm run dev
     depends_on:
       db_webhook:

@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+RUN mkdir -p /app/logs/messages
+
 EXPOSE 8080
 
 CMD ["npm", "run", "dev"]
