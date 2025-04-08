@@ -8,6 +8,13 @@ import logger from "./config/logger";
 import { appendLogEntry } from './config/phoneLogger';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import cors, { CorsOptions } from 'cors';
+
+const corsOptions: CorsOptions = {
+  origin: 'https://ia-sp-backoffice.ucatolica.cue.ec',
+  methods: ['GET'],
+  optionsSuccessStatus: 200
+};
 
 dotenv.config();
 
@@ -121,7 +128,7 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
 });
 
 
-app.get("/health", (_, res) => {
+app.get("/health", cors(corsOptions), (_, res) => {
   var date = new Date();
   res.status(200).json({
     status: 'ok',
@@ -131,5 +138,5 @@ app.get("/health", (_, res) => {
 });
 
 app.listen(PORT, () => {
-  logger.info(`Server is listening on port: ${PORT}`);
+  logger.info(`Server running`);
 });
