@@ -119,7 +119,7 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
           }
         });
       } catch (error) {
-        logger.error('Error al enviar los datos:', error);
+        logger.error('Error al enviar los datos al Back-end:', error);
       }
     }
   } catch (error) {
