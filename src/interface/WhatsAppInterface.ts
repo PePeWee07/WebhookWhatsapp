@@ -43,7 +43,7 @@ export interface Message {
   contacts?: MessageContact[];
   context?: Context;
   button?: Button;
-  interactive?: Interactive;
+  interactive?: any;
   referral?: Referral;
   order?: Order;
   system?: System;
@@ -133,23 +133,6 @@ export interface Sticker {
   mime_ype: string;
   sha256: string;
   id: string;
-}
-
-export interface Interactive {
-  list_reply?: ListReply;
-  type: string;
-  button_reply?: ButtonReply;
-}
-
-export interface ButtonReply {
-  id: string;
-  title: string;
-}
-
-export interface ListReply {
-  id: string;
-  title: string;
-  description: string;
 }
 
 export interface Location {
