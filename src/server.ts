@@ -94,8 +94,12 @@ app.post(
         //! Enviar estado al Backend
         try {
           if (!URL_BACKEND_MESSAGE_STATUS) {
-            logger.error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
-            throw new Error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
+            logger.error(
+              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
+            );
+            throw new Error(
+              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
+            );
           }
           await axios.post(URL_BACKEND_MESSAGE_STATUS, body, {
             headers: {
@@ -105,9 +109,30 @@ app.post(
           });
         } catch (error: any) {
           if (axios.isAxiosError(error)) {
-            logger.error("Error al enviar el Estado del mensaje al Back-end: ",error);
+            const details = {
+              message: error.message,
+              code: error.code,
+              url: error.config?.url,
+              status: error.response?.status,
+              data: error.response?.data,
+              headers: error.response?.headers,
+            };
+
+            console.error(
+              "AXIOS ERROR ESTADO MENSAJE >>>",
+              JSON.stringify(details, null, 2)
+            );
+
+            logger.error(
+              "Error al enviar estado de mensaje al Back-end: " +
+                JSON.stringify(details)
+            );
           } else {
-            logger.error("Error-: ", error);
+            console.error("ERROR NO AXIOS MENSAJE >>>", error);
+            logger.error(
+              "Error NO Axios al enviar estado de mensaje al Back-end: " +
+                String(error)
+            );
           }
         }
       }
@@ -149,13 +174,33 @@ app.post(
           });
         } catch (error: any) {
           if (axios.isAxiosError(error)) {
-            logger.error("Error al enviar mensaje al Back-end: ", error);
+            const details = {
+              message: error.message,
+              code: error.code,
+              url: error.config?.url,
+              status: error.response?.status,
+              data: error.response?.data,
+              headers: error.response?.headers,
+            };
+
+            console.error(
+              "AXIOS ERROR MENSAJE >>>",
+              JSON.stringify(details, null, 2)
+            );
+
+            logger.error(
+              "Error al enviar mensaje al Back-end: " + JSON.stringify(details)
+            );
           } else {
-            logger.error("Error-: ", error);
+            console.error("ERROR NO AXIOS MENSAJE >>>", error);
+            logger.error(
+              "Error NO Axios al enviar mensaje al Back-end: " + String(error)
+            );
           }
         }
+
       }
-      
+
     } catch (error) {
       logger.error("Error en el procesamiento del webhook: ", error);
     }
