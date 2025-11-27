@@ -66,18 +66,22 @@ app.get("/webhook", (req, res) => {
 // ======================================================
 //   Recepcion de Mensajes
 // ======================================================
-app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Promise<void> => {
-  res.sendStatus(200);
+app.post(
+  "/webhook",
+  async (req: Request<{}, {}, Whatsapp>, res: Response): Promise<void> => {
+    res.sendStatus(200);
     try {
       if (!req) {
-        logger.error("El cuerpo de la solicitud no tiene la estructura esperada.");
+        logger.error(
+          "El cuerpo de la solicitud no tiene la estructura esperada."
+        );
         return;
       }
 
       const body: Whatsapp = req.body;
       const resqValue = body.entry[0].changes[0].value;
-      
-      if (resqValue.statuses){
+
+      if (resqValue.statuses) {
         const waId = resqValue.statuses![0].recipient_id;
 
         //! Guardar Log (Message Status Updates)
@@ -87,15 +91,11 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
           logger.error("Error al guardar el log:", error);
         }
 
-        //! Enviar mensaje a Backend
+        //! Enviar estado al Backend
         try {
           if (!URL_BACKEND_MESSAGE_STATUS) {
-            logger.error(
-              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
-            );
-            throw new Error(
-              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
-            );
+            logger.error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
+            throw new Error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
           }
           await axios.post(URL_BACKEND_MESSAGE_STATUS, body, {
             headers: {
@@ -105,11 +105,7 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
           });
         } catch (error: any) {
           if (axios.isAxiosError(error)) {
-            logger.error("Error al enviar el Estado del mensaje al Back-end:", {
-              status: error.response?.status,
-              data: error.response?.data,
-              headers: error.response?.headers,
-            });
+            logger.error("Error al enviar el Estado del mensaje al Back-end: ",error);
           } else {
             logger.error("Error-: ", error);
           }
@@ -133,7 +129,9 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
 
         //! Descartar msj anteriores al inicio del webhook
         if (date < webhookStartTime) {
-          logger.info("Mensaje descartado por ser anterior al inicio del webhook: " + body);
+          logger.info(
+            "Mensaje descartado por ser anterior al inicio del webhook: " + body
+          );
           return;
         }
 
@@ -151,21 +149,15 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
           });
         } catch (error: any) {
           if (axios.isAxiosError(error)) {
-            logger.error("Error al enviar mensaje al Back-end:", {
-              status: error.response?.status,
-              data: error.response?.data,
-              headers: error.response?.headers,
-            });
+            logger.error("Error al enviar mensaje al Back-end: ", error);
           } else {
-            logger.error(
-              "Error-: ",
-              error
-            );
+            logger.error("Error-: ", error);
           }
         }
       }
+      
     } catch (error) {
-      logger.error("Error en el procesamiento del webhook:", error);
+      logger.error("Error en el procesamiento del webhook: ", error);
     }
   }
 );
