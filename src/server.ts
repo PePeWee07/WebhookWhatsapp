@@ -90,8 +90,12 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
         //! Enviar mensaje a Backend
         try {
           if (!URL_BACKEND_MESSAGE_STATUS) {
-            logger.error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
-            throw new Error("enviroment URL_BACKEND_MESSAGE_STATUS is not defined");
+            logger.error(
+              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
+            );
+            throw new Error(
+              "enviroment URL_BACKEND_MESSAGE_STATUS is not defined"
+            );
           }
           await axios.post(URL_BACKEND_MESSAGE_STATUS, body, {
             headers: {
@@ -99,8 +103,16 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
               [API_KEY_HEADER as string]: API_KEY,
             },
           });
-        } catch (error) {
-          logger.error("Error al enviar estado del mensaje al Back-end:", error);
+        } catch (error: any) {
+          if (axios.isAxiosError(error)) {
+            logger.error("Error al enviar el Estado del mensaje al Back-end:", {
+              status: error.response?.status,
+              data: error.response?.data,
+              headers: error.response?.headers,
+            });
+          } else {
+            logger.error("Error-: ", error);
+          }
         }
       }
 
@@ -137,8 +149,19 @@ app.post("/webhook", async (req: Request<{}, {}, Whatsapp>, res: Response): Prom
               [API_KEY_HEADER as string]: API_KEY,
             },
           });
-        } catch (error) {
-          logger.error("Error al enviar mensaje al Back-end:", error);
+        } catch (error: any) {
+          if (axios.isAxiosError(error)) {
+            logger.error("Error al enviar mensaje al Back-end:", {
+              status: error.response?.status,
+              data: error.response?.data,
+              headers: error.response?.headers,
+            });
+          } else {
+            logger.error(
+              "Error-: ",
+              error
+            );
+          }
         }
       }
     } catch (error) {
