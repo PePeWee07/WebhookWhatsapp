@@ -137,7 +137,7 @@ app.post(
         }
       }
 
-      if (resqValue.contacts) {
+      if (resqValue.messages) {
         const waId = resqValue.contacts![0].wa_id;
         const timestamp = resqValue.messages?.[0].timestamp || "unknown";
         const date = new Date(Number(timestamp) * 1000);
@@ -155,7 +155,8 @@ app.post(
         //! Descartar msj anteriores al inicio del webhook
         if (date < webhookStartTime) {
           logger.info(
-            "Mensaje descartado por ser anterior al inicio del webhook: " + body
+            "Mensaje descartado por ser anterior al inicio del webhook: " +
+              body,
           );
           return;
         }
@@ -185,20 +186,19 @@ app.post(
 
             console.error(
               "AXIOS ERROR MENSAJE >>>",
-              JSON.stringify(details, null, 2)
+              JSON.stringify(details, null, 2),
             );
 
             logger.error(
-              "Error al enviar mensaje al Back-end: " + JSON.stringify(details)
+              "Error al enviar mensaje al Back-end: " + JSON.stringify(details),
             );
           } else {
             console.error("ERROR NO AXIOS MENSAJE >>>", error);
             logger.error(
-              "Error NO Axios al enviar mensaje al Back-end: " + String(error)
+              "Error NO Axios al enviar mensaje al Back-end: " + String(error),
             );
           }
         }
-
       }
 
     } catch (error) {

@@ -12,6 +12,7 @@ yarn-error.log*
 
 # Variables de entorno (nunca se deben versionar)
 .env
+.env.prod
 
 # Directorios y archivos generados por el sistema operativo
 .DS_Store

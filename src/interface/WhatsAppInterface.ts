@@ -24,6 +24,7 @@ export interface Value {
 export interface ValueContact {
   profile: Profile;
   wa_id: string;
+  user_id: string;
 }
 
 export interface Profile {
@@ -33,6 +34,7 @@ export interface Profile {
 export interface Message {
   from: string;
   id: string;
+  from_user_id:  string,
   timestamp: string;
   text?: Text;
   type?: string;
@@ -188,6 +190,7 @@ export interface Status {
   status: string;
   timestamp: string;
   recipient_id: string;
+  recipient_user_id: string;
   conversation?: Conversation;
   pricing?: Pricing;
   errors?: StatusError[];
