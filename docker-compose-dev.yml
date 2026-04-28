@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  webhook:
-    container_name: webhook-app-dev
+  whatsapp_webhook:
+    container_name: catia-webhook
     build:
       context: .
       dockerfile: Dockerfile.dev
