@@ -1,23 +1,19 @@
-version: '3.9'
-
 services:
-  webhook:
-    container_name: webhook-app
+  whatsapp_webhook:
+    container_name: catia-webhook
     image: pepewee/whatsapp-webhook:latest
     ports:
       - "8081:8080"
     env_file:
       - .env
+    volumes:
+      - whatsapp_webhook_logs:/app/logs
     restart: always
     networks:
       - virtual_assistant_network
-    volumes:
-      - webhook_logs:/app/logs
-
-
 
 volumes:
-  webhook_logs:
+  whatsapp_webhook_logs:
 
 networks:
   virtual_assistant_network:
