@@ -8,17 +8,10 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cors, { CorsOptions } from "cors";
 
-const corsOptions: CorsOptions = {
-  origin: "https://ia-sp-backoffice.ucatolica.cue.ec",
-  methods: ["GET"],
-  optionsSuccessStatus: 200,
-};
-
 dotenv.config();
 
 const app = express();
 app.set("trust proxy", 1);
-
 app.use(express.json());
 
 const webhookStartTime = new Date();
@@ -31,7 +24,14 @@ const {
   URL_BACKEND_MESSAGE_STATUS,
   API_KEY_HEADER,
   API_KEY,
+  CORS_ORIGIN
 } = process.env;
+
+const corsOptions: CorsOptions = {
+  origin: CORS_ORIGIN || "https://ia-sp-backoffice.ucatolica.cue.ec",
+  methods: ["GET"],
+  optionsSuccessStatus: 200,
+};
 
 // ======================================================
 //   Seguridad basica
